@@ -71,7 +71,7 @@ def test_refund_service_idempotency(db_session):
     assert res2["success"] is True
     assert res2["is_duplicate"] is True
     assert res2["data"]["refund_id"] == first_refund_id
-    assert "Idempotent retry detected" in res2["message"]
+    assert "Duplicate request detected" in res2["message"]
 
     # 3. Verify that exactly 1 refund record exists in the database table
     total_refunds = db_session.query(RefundModel).count()

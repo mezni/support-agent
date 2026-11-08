@@ -30,7 +30,7 @@ class RefundService:
             return {
                 "success": True,
                 "is_duplicate": True,
-                "message": "Idempotent retry detected. Returning existing transaction record.",
+                "message": "Duplicate request detected. Returning existing transaction record.",
                 "data": {
                     "refund_id": existing_refund.refund_id,
                     "order_id": existing_refund.order_id,

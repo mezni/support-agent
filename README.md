@@ -1,36 +1,33 @@
-Customer Support AI Agent (support-agent)
+# Customer Support AI Agent (support-agent)
+
 A production-grade, secure, and deterministic customer support AI agent built with FastAPI, OpenAI, SQLAlchemy, and Pydantic. This architecture prioritizes security, policy enforcement, transactional integrity (idempotency), and auditability for enterprise e-commerce platforms.
 
-🏗️ Architectural Highlights
-Deterministic Policy Engine: Enforces strict business rules (e.g., 30-day return windows, order status validation) programmatically rather than relying purely on LLM reasoning.
+## 🏗️ Architectural Highlights
 
-Human-in-the-Loop (HITL) Workflow: Automatically flags high-value financial requests exceeding $100.00 for supervisor review (PENDING_APPROVAL).
+| Feature | Description |
+|---|---|
+| **Deterministic Policy Engine** | Enforces strict business rules (e.g., 30-day return windows, order status validation) programmatically rather than relying purely on LLM reasoning. |
+| **Human-in-the-Loop (HITL) Workflow** | Automatically flags high-value financial requests exceeding $100.00 for supervisor review (PENDING_APPROVAL). |
+| **Idempotency Protection** | Prevents duplicate financial transactions and double writes during network retries using unique idempotency keys. |
+| **Immutable Audit Logging** | Middleware and service layers record all tool executions, API requests, timing, actor metadata, and outcomes. |
+| **Secure Tool Allowlisting** | Strict Pydantic argument validation and function-calling schemas prevent unauthorized actions or prompt injection exploits. |
 
-Idempotency Protection: Prevents duplicate financial transactions and double writes during network retries using unique idempotency keys.
+## 🛠️ Tech Stack
 
-Immutable Audit Logging: Middleware and service layers record all tool executions, API requests, timing, actor metadata, and outcomes.
+| Category | Technology |
+|---|---|
+| **Language** | Python 3.11+ |
+| **Package Management** | [uv](https://astral.sh/uv/) |
+| **API Framework** | FastAPI, Uvicorn |
+| **Database & ORM** | SQLite, SQLAlchemy |
+| **Validation & Settings** | Pydantic v2, pydantic-settings |
+| **Authentication** | JWT (python-jose) |
+| **Testing** | pytest |
+| **Containerization** | Docker & Docker Compose |
 
-Secure Tool Allowlisting: Strict Pydantic argument validation and function-calling schemas prevent unauthorized actions or prompt injection exploits.
+## 📂 Project Structure
 
-🛠️ Tech Stack
-Language: Python 3.11+
-
-Package Management: uv
-
-API Framework: FastAPI, Uvicorn
-
-Database & ORM: SQLite, SQLAlchemy
-
-Validation & Settings: Pydantic v2, pydantic-settings
-
-Authentication: JWT (python-jose)
-
-Testing: pytest
-
-Containerization: Docker & Docker Compose
-
-📂 Project Structure
-Plaintext
+```text
 support-agent/
 ├── app/
 │   ├── api/
@@ -62,47 +59,66 @@ support-agent/
 ├── docker-compose.yml          # Container orchestration with persistent volumes
 ├── pyproject.toml              # Dependency definitions
 └── README.md
-🚀 Getting Started & Installation
-Prerequisites
-Python 3.11+
+```
 
-Astral uv package manager
+## 🚀 Getting Started & Installation
 
-Docker & Docker Compose (optional for containerized deployment)
+### Prerequisites
 
-1. Clone and Install Dependencies
-Bash
+- Python 3.11+
+- [uv](https://astral.sh/uv/) package manager
+- Docker & Docker Compose (optional, for containerized deployment)
+
+### 1. Clone and Install Dependencies
+
+```bash
 git clone https://github.com/your-org/support-agent.git
 cd support-agent
 
 # Install dependencies using uv
 uv sync
-2. Configure Environment Variables
-Create a .env file in the project root:
+```
 
-Code snippet
+### 2. Configure Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
 OPENAI_API_KEY="your-openai-api-key-here"
 JWT_SECRET_KEY="super-secret-jwt-key-change-in-production"
 DATABASE_URL="sqlite:///./data/support_agent.db"
-3. Initialize the Database
-Bash
-python -m app.init_db
-4. Run the Development Server
-Bash
-uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-Access the interactive Swagger UI at http://localhost:8000/docs.
+```
 
-🐳 Running with Docker
+### 3. Initialize the Database
+
+```bash
+python -m app.init_db
+```
+
+### 4. Run the Development Server
+
+```bash
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Access the interactive Swagger UI at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+### 🐳 Running with Docker
+
 To containerize and run the application using Docker Compose:
 
-Bash
+```bash
 # Build and start containers in detached mode
 docker compose up --build -d
 
 # Initialize database inside the container
 docker compose exec support-agent python -m app.init_db
-🧪 Running Tests
+```
+
+### 🧪 Running Tests
+
 Execute the comprehensive test suite using pytest via uv:
 
-Bash
+```bash
 uv run pytest -v
+```
